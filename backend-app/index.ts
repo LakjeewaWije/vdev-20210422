@@ -1,6 +1,7 @@
 import fastify from "fastify";
 import Fuse from "fuse.js";
-
+import FS from "fastify-static";
+const path = require('path');
 const server = fastify();
 
 const MovieList = [
@@ -24,8 +25,14 @@ const MovieList = [
   },
 ];
 
+server.register(FS, {
+  root: path.join(__dirname, 'dist'),
+  // optional: default '/'
+})
+
 server.get("/", async (request, reply) => {
-  return "server running";
+  
+  return reply.sendFile('index.html') // serving path.join(__dirname, 'public', 'myHtml.html') directly
 });
 
 server.get("/api/info", async (request, reply) => {

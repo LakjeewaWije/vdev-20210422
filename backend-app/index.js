@@ -41,6 +41,8 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var fastify_1 = __importDefault(require("fastify"));
 var fuse_js_1 = __importDefault(require("fuse.js"));
+var fastify_static_1 = __importDefault(require("fastify-static"));
+var path = require('path');
 var server = fastify_1.default();
 var MovieList = [
     {
@@ -62,9 +64,13 @@ var MovieList = [
         description: "A troubled teenager follows a man in a rabbit suit.",
     },
 ];
+server.register(fastify_static_1.default, {
+    root: path.join(__dirname, 'dist'),
+    // optional: default '/'
+});
 server.get("/", function (request, reply) { return __awaiter(void 0, void 0, void 0, function () {
     return __generator(this, function (_a) {
-        return [2 /*return*/, "server running"];
+        return [2 /*return*/, reply.sendFile('index.html')]; // serving path.join(__dirname, 'public', 'myHtml.html') directly
     });
 }); });
 server.get("/api/info", function (request, reply) { return __awaiter(void 0, void 0, void 0, function () {
