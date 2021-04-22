@@ -40,35 +40,78 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var fastify_1 = __importDefault(require("fastify"));
+var fuse_js_1 = __importDefault(require("fuse.js"));
+var fastify_static_1 = __importDefault(require("fastify-static"));
+var path = require('path');
 var server = fastify_1.default();
-server.get('/', function (request, reply) { return __awaiter(void 0, void 0, void 0, function () {
+var MovieList = [
+    {
+        id: 1,
+        name: "Inception",
+        year: 2010,
+        description: "A thief tries to plant an idea into the mind of a C.E.O.",
+    },
+    {
+        id: 2,
+        name: "The Matrix",
+        year: 1999,
+        description: "A hacker discovers a shocking truth about his world.",
+    },
+    {
+        id: 3,
+        name: "Donnie Darko",
+        year: 2001,
+        description: "A troubled teenager follows a man in a rabbit suit.",
+    },
+];
+server.register(fastify_static_1.default, {
+    root: path.join(__dirname, 'dist'),
+    // optional: default '/'
+});
+server.get("/", function (request, reply) { return __awaiter(void 0, void 0, void 0, function () {
     return __generator(this, function (_a) {
-        return [2 /*return*/, 'server running'];
+        return [2 /*return*/, reply.sendFile('index.html')]; // serving path.join(__dirname, 'public', 'myHtml.html') directly
     });
 }); });
-server.get('/api/info', function (request, reply) { return __awaiter(void 0, void 0, void 0, function () {
+server.get("/api/info", function (request, reply) { return __awaiter(void 0, void 0, void 0, function () {
     return __generator(this, function (_a) {
-        return [2 /*return*/, { "version": 1, "description": "Movies server API" }];
+        return [2 /*return*/, { version: 1, description: "Movies server API" }];
     });
 }); });
-server.get('/api/movies', function (request, reply) { return __awaiter(void 0, void 0, void 0, function () {
+server.get("/api/movies", function (request, reply) { return __awaiter(void 0, void 0, void 0, function () {
+    var keyword, options, newMovieList, fuse, tempNewMovieList;
     return __generator(this, function (_a) {
-        return [2 /*return*/, [{
-                    "id": 1,
-                    "name": "Inception",
-                    "year": 2010,
-                    "description": "A thief tries to plant an idea into the mind of a C.E.O."
-                }, {
-                    "id": 2,
-                    "name": "The Matrix",
-                    "year": 1999,
-                    "description": "A hacker discovers a shocking truth about his world."
-                }, {
-                    "id": 3,
-                    "name": "Donnie Darko",
-                    "year": 2001,
-                    "description": "A troubled teenager follows a man in a rabbit suit."
-                }]];
+        keyword = request.query.keyword;
+        console.log("Keyword BackEnd ", keyword);
+        reply.header("Access-Control-Allow-Origin", "*");
+        reply.header("Access-Control-Allow-Methods", "POST");
+        options = {
+            // isCaseSensitive: false,
+            // includeScore: false,
+            // shouldSort: true,
+            // includeMatches: false,
+            // findAllMatches: false,
+            // minMatchCharLength: 1,
+            // location: 0,
+            // threshold: 0.6,
+            // distance: 100,
+            // useExtendedSearch: false,
+            // ignoreLocation: false,
+            // ignoreFieldNorm: false,
+            keys: ["name", "year", "description"],
+        };
+        newMovieList = [];
+        if (keyword) {
+            fuse = new fuse_js_1.default(MovieList, options);
+            tempNewMovieList = fuse.search(keyword);
+            tempNewMovieList.forEach(function (obj) { newMovieList.push(obj.item); });
+            console.log("new movie list ", newMovieList);
+        }
+        else {
+            newMovieList = MovieList;
+            console.log("new movie list ", newMovieList);
+        }
+        return [2 /*return*/, newMovieList];
     });
 }); });
 server.listen(8080, function (err, address) {
