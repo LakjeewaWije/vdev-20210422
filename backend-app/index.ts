@@ -12,6 +12,8 @@ server.get('/api/info', async (request, reply) => {
   });
 
 server.get('/api/movies', async (request, reply) => {
+  reply.header("Access-Control-Allow-Origin", "*");
+  reply.header("Access-Control-Allow-Methods", "POST");
     return [{
         "id": 1,
            "name": "Inception",

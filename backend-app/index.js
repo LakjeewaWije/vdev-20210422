@@ -53,6 +53,8 @@ server.get('/api/info', function (request, reply) { return __awaiter(void 0, voi
 }); });
 server.get('/api/movies', function (request, reply) { return __awaiter(void 0, void 0, void 0, function () {
     return __generator(this, function (_a) {
+        reply.header("Access-Control-Allow-Origin", "*");
+        reply.header("Access-Control-Allow-Methods", "POST");
         return [2 /*return*/, [{
                     "id": 1,
                     "name": "Inception",
