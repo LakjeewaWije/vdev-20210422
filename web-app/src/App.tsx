@@ -9,13 +9,14 @@ function App() {
 
 
   useEffect(() => {
-    getMovies();
+    getMovies('');
   }, []);
 
 
 
-  const getMovies = async () => {
-    let url = BASE_URL+ 'api/movies';
+  const getMovies = async (keyword : string) => {
+    console.log(" Search This ",keyword);
+    let url = BASE_URL+ `api/movies?keyword=${keyword}`;
     let response = await fetch(url);
 
     if (response.ok) {
@@ -40,7 +41,7 @@ function App() {
           <div className="flex flex-row">
             <div style={{ padding: 10 }}>search</div>
             <div>
-              <input type="text" className="search-text"></input>
+              <input type="text" className="search-text" onChange={(event)=>{getMovies(event.target.value)}}></input>
             </div>
           </div>
         </div>
