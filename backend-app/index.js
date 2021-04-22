@@ -43,7 +43,7 @@ var fastify_1 = __importDefault(require("fastify"));
 var server = fastify_1.default();
 server.get('/', function (request, reply) { return __awaiter(void 0, void 0, void 0, function () {
     return __generator(this, function (_a) {
-        return [2 /*return*/, 'pong\n'];
+        return [2 /*return*/, 'server running'];
     });
 }); });
 server.get('/api/info', function (request, reply) { return __awaiter(void 0, void 0, void 0, function () {
