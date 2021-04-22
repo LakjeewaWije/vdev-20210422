@@ -1,0 +1,36 @@
+.main {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10%;
+}
+
+.inner-main {
+  border: 1px solid black;
+  width: 70%;
+}
+
+.search-text {
+  border: 1px solid;
+  background-color: lightgrey;
+  padding: 10px;
+}
+
+.header {
+  padding: 10px;
+}
+.movie {
+  border: 0.5px solid;
+  padding: 5px;
+  margin-top: 0px;
+}
+
+.movie-list-wrap {
+  padding: 10px;
+}
+
+.footer {
+  float: right;
+  padding: 10px;
+}
